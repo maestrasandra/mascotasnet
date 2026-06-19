@@ -78,9 +78,10 @@ WSGI_APPLICATION = 'mascotasnet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+MYSQL_HOST = os.environ.get('MYSQLHOST')
 MYSQL_URL = os.environ.get('MYSQL_URL') or os.environ.get('DATABASE_URL')
 
-if MYSQL_URL:
+if MYSQL_HOST or MYSQL_URL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
