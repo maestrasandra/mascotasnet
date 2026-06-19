@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MascotasNet - Plataforma de Adopción de Mascotas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link" href="/mascotas/">Mascotas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tienda/">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/articulos/">Artículos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/carrito/">🛒 Carrito</a></li>
+                   {% if user.is_authenticated %}<li class="nav-item"><span class="nav-link" style="color:var(--text-muted); font-size:14px;">{{ user.first_name|default:user.username }}</span></li>{% if usuario.rol == "administrador" %}<li class="nav-item"><a class="nav-link" href="/admin-panel/productos/" style="color:var(--primary); font-weight:600;">Panel Admin</a></li>{% endif %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>{% else %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/login/">Ingresar</a></li>{% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-badge">
+                        <span>🏅</span> Más de 500 mascotas adoptadas
+                    </div>
+                    <h1>Encuentra tu <span>Compañero</span> Perfecto</h1>
+                    <p>Adopta una mascota y transforma dos vidas. Descubre nuestro catálogo de mascotas disponibles y accede a productos de calidad para su cuidado.</p>
+                    <div class="hero-buttons d-flex flex-wrap gap-3">
+                        <a href="/mascotas/" class="btn btn-primary btn-lg">Ver Mascotas</a>
+                        <a href="/tienda/" class="btn btn-success btn-lg">Ir a la Tienda</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center hero-image-wrap mt-4 mt-lg-0">
+                    <div class="hero-logo-container">
+                        <img src="{% static 'img/logo.png' %}" alt="MascotasNet Logo" style="width: 220px; height: 220px; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Mascotas adoptadas</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">120+</div>
+                        <div class="stat-label">Productos en tienda</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Artículos educativos</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Familias satisfechas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="py-5 py-lg-6" style="padding-top: 80px !important; padding-bottom: 80px !important;">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">¿Por qué elegirnos?</span>
+                <h2 class="section-title">Todo lo que tu mascota necesita</h2>
+                <p class="section-subtitle">Desde la adopción hasta el cuidado diario, estamos contigo en cada paso del camino.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">❤️</div>
+                        <h3>Adopción Responsable</h3>
+                        <p>Proceso seguro y transparente para conectar mascotas con familias amorosas. Cada historia merece un final feliz.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🛍️</div>
+                        <h3>Tienda Completa</h3>
+                        <p>Productos de calidad premium para la alimentación, juego y bienestar de tus mascotas, a los mejores precios.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Recursos Educativos</h3>
+                        <p>Artículos y guías escritos por veterinarios y expertos para ayudarte a ser el mejor dueño posible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pages Section -->
+    <section class="py-5" style="background: var(--warm); padding-top: 80px !important; padding-bottom: 80px !important;">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">Explora</span>
+                <h2 class="section-title">Páginas de la Aplicación</h2>
+                <p class="section-subtitle">Navega por todas las secciones que tenemos disponibles para ti.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="page-card">
+                        <div class="page-card-header">🏠</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Inicio</h5>
+                            <p class="card-text">Página principal con información general y acceso rápido.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a href="/mascotas/" class="text-decoration-none">
+                    <div class="page-card">
+                        <div class="page-card-header">🐱</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Mascotas</h5>
+                            <p class="card-text">Catálogo completo de mascotas disponibles para adopción.</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/tienda/" class="text-decoration-none">
+                    <div class="page-card">
+                        <div class="page-card-header">🛒</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Tienda</h5>
+                            <p class="card-text">Productos y accesorios para el cuidado de tus mascotas.</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/articulos/" class="text-decoration-none">
+                    <div class="page-card">
+                        <div class="page-card-header">📰</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Artículos</h5>
+                            <p class="card-text">Guías e información educativa sobre el cuidado animal.</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/carrito/" class="text-decoration-none">
+                    <div class="page-card">
+                        <div class="page-card-header">🛍️</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Carrito</h5>
+                            <p class="card-text">Gestiona tus compras y realiza el pago de forma segura.</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/login/" class="text-decoration-none">
+                    <div class="page-card">
+                        <div class="page-card-header">👤</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Perfil</h5>
+                            <p class="card-text">Inicia sesión y administra tu cuenta y adopciones.</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta text-center">
+        <div class="container">
+            <h2>¿Listo para encontrar tu mascota?</h2>
+            <p class="mb-5">Explora nuestro catálogo de mascotas disponibles para adopción hoy mismo.</p>
+            <a href="/mascotas/" class="btn btn-light btn-lg">Comenzar Ahora →</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="footer-brand">
+                        <img src="{% static 'img/logo.png' %}" alt="Logo" style="width:36px;height:36px;object-fit:contain;border-radius:8px;">
+                        MascotasNet
+                    </div>
+                    <p class="footer-tagline">Conectando mascotas con familias amorosas desde 2024. Cada adopción cambia dos vidas.</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-6 col-md-4">
+                            <p style="color:rgba(255,255,255,0.4); font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Explorar</p>
+                            <ul class="list-unstyled" style="font-size:14px;">
+                                <li class="mb-2"><a href="/mascotas/" style="color:rgba(255,255,255,0.6); text-decoration:none;">Mascotas</a></li>
+                                <li class="mb-2"><a href="/tienda/" style="color:rgba(255,255,255,0.6); text-decoration:none;">Tienda</a></li>
+                                <li class="mb-2"><a href="/articulos/" style="color:rgba(255,255,255,0.6); text-decoration:none;">Artículos</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <p style="color:rgba(255,255,255,0.4); font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Mi Cuenta</p>
+                            <ul class="list-unstyled" style="font-size:14px;">
+                                <li class="mb-2"><a href="/login/" style="color:rgba(255,255,255,0.6); text-decoration:none;">Ingresar</a></li>
+                                <li class="mb-2"><a href="/carrito/" style="color:rgba(255,255,255,0.6); text-decoration:none;">Carrito</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <p class="footer-bottom">© 2026 MascotasNet — Diseñado con ❤️ para cambiar vidas de mascotas</p>
+        </div>
+    </footer>
+
+    {% include 'chatbot.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

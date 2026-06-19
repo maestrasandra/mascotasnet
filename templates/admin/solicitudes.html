@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Solicitudes de Adopción</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><span class="nav-link" style="color:var(--primary); font-weight:600;">Panel Admin</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Administrador</span>
+            <h1>Solicitudes de Adopción</h1>
+            <p>Gestiona y revisa las solicitudes de adopción registradas por los usuarios.</p>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+
+            <div class="mb-4 border-bottom">
+                <ul class="nav nav-tabs" style="border-bottom:none;">
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/productos/">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/mascotas/">Mascotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/articulos/">Artículos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin-panel/solicitudes/" style="font-weight:600;">Solicitudes</a>
+                    </li>
+                </ul>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="border-radius:10px;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 style="font-family:'Playfair Display',serif; margin:0;">Solicitudes Recibidas ({{ solicitudes.count }})</h5>
+            </div>
+
+            <div style="background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow-sm);">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mascota</th>
+                                <th>Solicitante</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Estado</th>
+                                <th>Notas</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for solicitud in solicitudes %}
+                            <tr>
+                                <td>{{ solicitud.id_adopcion }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width:36px; height:36px; border-radius:50%; background: linear-gradient(135deg, #FFE5D9, #FFDCC8); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                                            {% if solicitud.mascota_id_mascota.imagen %}
+                                                <img src="{% static solicitud.mascota_id_mascota.imagen %}" style="width:100%; height:100%; object-fit:cover;">
+                                            {% else %}
+                                                🐾
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <strong style="color:var(--text-dark);">{{ solicitud.mascota_id_mascota.nombre }}</strong>
+                                            <span style="font-size:11px; display:block; color:var(--text-muted);">{{ solicitud.mascota_id_mascota.especie }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong style="color:var(--text-dark);">{{ solicitud.usuario_id_usuario.nombre }} {{ solicitud.usuario_id_usuario.apellido }}</strong>
+                                        <span style="font-size:12px; display:block; color:var(--text-muted);">{{ solicitud.usuario_id_usuario.correo }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ solicitud.fecha_solicitud|date:"d/m/Y" }}</td>
+                                <td>
+                                    {% if solicitud.estado == 'pendiente' %}
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                    {% elif solicitud.estado == 'aprobada' %}
+                                        <span class="badge bg-success">Aprobada</span>
+                                    {% elif solicitud.estado == 'rechazada' %}
+                                        <span class="badge bg-danger">Rechazada</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ solicitud.estado }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span style="font-size:13px; color:var(--text-muted);">{{ solicitud.notas|default:"- - -" }}</span>
+                                </td>
+                                <td>
+                                    {% if solicitud.estado == 'pendiente' %}
+                                        <div class="d-flex gap-2">
+                                            <form action="{% url 'admin_aprobar_solicitud' solicitud.id_adopcion %}" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas APROBAR esta solicitud?')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-success btn-sm" style="border-radius:6px; font-weight:600; padding:4px 12px;">Aprobar</button>
+                                            </form>
+                                            <form action="{% url 'admin_rechazar_solicitud' solicitud.id_adopcion %}" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas RECHAZAR esta solicitud?')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm" style="border-radius:6px; font-weight:600; padding:4px 12px;">Rechazar</button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted" style="font-size:13px;">Sin acciones</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center" style="color:var(--text-muted); padding:40px;">No hay solicitudes de adopción registradas.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <hr class="footer-divider" style="margin-top:0;">
+            <p class="footer-bottom">2026 MascotasNet</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

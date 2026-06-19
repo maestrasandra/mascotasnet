@@ -1,0 +1,525 @@
+[
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2026-05-19T16:06:46.386Z",
+        "user": 1,
+        "content_type": 8,
+        "object_id": "5",
+        "object_repr": "Alimento para gatos sabor salmon",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Precio\"]}}]"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 3,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 3,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 3,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 3,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 2,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 2,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 2,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 2,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 4,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 4,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 4,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 4,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 5,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 5,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 5,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 5,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 6,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 6,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 6,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 6,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$gYtVaNo0da1jv8vU8Sanzm$3FngLAsm6cDmKLYa3PgtsTWG4Fh6E1wGPq5xuL0QyfI=",
+        "last_login": "2026-05-19T16:04:57.935Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@example.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-05-19T15:23:07.005Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$0iDjnnWxDvsFNcRGyqNQMi$4cr9hyPJxBAtkNUQ9L27w55Jbg07Pmd0g5+anJXylto=",
+        "last_login": "2026-05-19T16:10:54.275Z",
+        "is_superuser": false,
+        "username": "hallercha@gmail.com",
+        "first_name": "haller",
+        "last_name": "chamorro",
+        "email": "hallercha@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-05-19T15:39:05.800Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "core",
+        "model": "usuario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "core",
+        "model": "producto"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "core",
+        "model": "carrito"
+    }
+},
+{
+    "model": "core.usuario",
+    "pk": 1,
+    "fields": {
+        "nombre": "Admin",
+        "apellido": "MascotasNet",
+        "correo": "admin@mascotasnet.com",
+        "contraseña_hash": "temporal_django_hashea_esto",
+        "rol": "administrador",
+        "fecha_registro": "2026-05-19T10:20:55Z",
+        "activo": 1
+    }
+},
+{
+    "model": "core.usuario",
+    "pk": 2,
+    "fields": {
+        "nombre": "Admin",
+        "apellido": "SuperUser",
+        "correo": "admin",
+        "contraseña_hash": "NA",
+        "rol": "administrador",
+        "fecha_registro": "2026-05-19T15:32:55Z",
+        "activo": 1
+    }
+},
+{
+    "model": "core.usuario",
+    "pk": 3,
+    "fields": {
+        "nombre": "haller",
+        "apellido": "chamorro",
+        "correo": "hallercha@gmail.com",
+        "contraseña_hash": "NA",
+        "rol": "cliente",
+        "fecha_registro": "2026-05-19T15:39:08Z",
+        "activo": 1
+    }
+},
+{
+    "model": "core.mascota",
+    "pk": 1,
+    "fields": {
+        "nombre": "Max",
+        "especie": "Perro",
+        "raza": "Labrador",
+        "edad": 3,
+        "sexo": "Macho",
+        "estado_salud": "Excelente",
+        "descripcion": "Muy amigable y juguetón. Le encanta correr.",
+        "imagen": "img/max.png",
+        "estado_adopcion": "Disponible",
+        "fecha_ingreso": "2026-05-19"
+    }
+},
+{
+    "model": "core.mascota",
+    "pk": 2,
+    "fields": {
+        "nombre": "Luna",
+        "especie": "Gato",
+        "raza": "Persa",
+        "edad": 2,
+        "sexo": "Hembra",
+        "estado_salud": "Excelente",
+        "descripcion": "Tranquila y cariñosa. Ideal para apartamentos.",
+        "imagen": "img/luna.png",
+        "estado_adopcion": "Disponible",
+        "fecha_ingreso": "2026-05-19"
+    }
+},
+{
+    "model": "core.mascota",
+    "pk": 3,
+    "fields": {
+        "nombre": "Bolita",
+        "especie": "Conejo",
+        "raza": "Holandés",
+        "edad": 1,
+        "sexo": "Macho",
+        "estado_salud": "Buena",
+        "descripcion": "Pequeño y curioso. Ya está en proceso de adopción.",
+        "imagen": "img/bolita.png",
+        "estado_adopcion": "En proceso",
+        "fecha_ingreso": "2026-05-19"
+    }
+},
+{
+    "model": "core.producto",
+    "pk": 1,
+    "fields": {
+        "nombre": "Alimento Premium para Perros",
+        "categoria": "Alimentos",
+        "descripcion": "Alimento balanceado bolsa 5kg, rico en proteínas.",
+        "precio": "189900.00",
+        "stock": 15,
+        "imagen": "img/alimento.png",
+        "disponibilidad": 1,
+        "usuario_id_usuario": 1
+    }
+},
+{
+    "model": "core.producto",
+    "pk": 2,
+    "fields": {
+        "nombre": "Juguete Interactivo para Gatos",
+        "categoria": "Juguetes",
+        "descripcion": "Pelota con cascabel, resistente y segura.",
+        "precio": "53900.00",
+        "stock": 25,
+        "imagen": "img/juguete.png",
+        "disponibilidad": 1,
+        "usuario_id_usuario": 1
+    }
+},
+{
+    "model": "core.producto",
+    "pk": 3,
+    "fields": {
+        "nombre": "Shampoo Hipoalergénico",
+        "categoria": "Cuidado",
+        "descripcion": "Shampoo suave para todo tipo de pelaje, 500ml.",
+        "precio": "76500.00",
+        "stock": 30,
+        "imagen": "img/shampoo.png",
+        "disponibilidad": 1,
+        "usuario_id_usuario": 1
+    }
+},
+{
+    "model": "core.articuloinformativo",
+    "pk": 1,
+    "fields": {
+        "titulo": "Guía Completa de Cuidado de Perros",
+        "contenido": "Tener un perro es una de las experiencias más gratificantes de la vida, pero también conlleva una gran responsabilidad. Para asegurar que tu compañero peludo tenga una vida larga, sana y feliz, es fundamental cubrir todas sus necesidades físicas y emocionales. A continuación, te presentamos nuestra guía completa de cuidado.\n\n1. Alimentación Balanceada\nUna buena nutrición es la base de la salud. Es vital elegir un alimento de alta calidad adecuado para la edad, tamaño y nivel de actividad de tu perro. Los cachorros necesitan dietas ricas en calorías para su desarrollo, mientras que los perros mayores se benefician de alimentos formulados para cuidar sus articulaciones. Recuerda siempre mantener un recipiente con agua fresca y limpia a su disposición.\n\n2. Ejercicio Diario\nLos perros necesitan actividad física diaria no solo para mantenerse en forma, sino también para su bienestar mental. Dependiendo de la raza, un perro puede necesitar desde un par de paseos cortos al día hasta largas carreras y juegos intensos. El ejercicio ayuda a prevenir el aburrimiento, que a menudo se traduce en comportamientos destructivos en el hogar.\n\n3. Higiene y Aseo\nEl cuidado del pelaje de tu perro dependerá de su raza, pero el cepillado regular es recomendado para todos; ayuda a eliminar el pelo muerto y distribuye los aceites naturales de su piel. Además, no olvides el cuidado dental (cepillar sus dientes un par de veces a la semana previene enfermedades periodontales) y el corte regular de sus uñas. Bañarlo una vez al mes suele ser suficiente para la mayoría de las razas.\n\n4. Visitas al Veterinario\nLa prevención es tu mejor aliada. Lleva a tu perro al veterinario al menos una vez al año para un chequeo general. Mantén al día su calendario de vacunación y asegúrate de proporcionarle tratamientos contra parásitos internos y externos (como pulgas y garrapatas). Si notas cualquier cambio repentino en su apetito, energía o comportamiento, no dudes en consultar a un profesional.\n\n5. Entrenamiento y Socialización\nUn perro bien educado es un perro feliz. Dedica tiempo a enseñarle comandos básicos y normas de convivencia usando refuerzo positivo (premios, caricias). La socialización temprana con otros perros, personas y entornos es crucial para que desarrolle confianza y no sea temeroso o agresivo en el futuro.\n\n6. Cariño y Atención\nPor último, pero no menos importante, los perros son animales extremadamente sociales que forman lazos profundos con sus familias. Dedícale tiempo de calidad todos los días: juega con él, háblale y hazle saber que es amado. Un entorno lleno de cariño es fundamental para su estabilidad emocional.\n\nCon amor, paciencia y siguiendo estos consejos, garantizarás que tu mejor amigo disfrute de la mejor calidad de vida a tu lado.",
+        "fecha_publicacion": "2026-05-19",
+        "categoria": "Cuidado General",
+        "imagen": "img/articulo.png",
+        "usuario_id_usuario": 1
+    }
+},
+{
+    "model": "core.carrito",
+    "pk": 1,
+    "fields": {
+        "fecha_creacion": "2026-05-19T15:35:13Z",
+        "estado": "activo",
+        "usuario_id_usuario": 2
+    }
+},
+{
+    "model": "core.carrito",
+    "pk": 2,
+    "fields": {
+        "fecha_creacion": "2026-05-19T15:40:27Z",
+        "estado": "activo",
+        "usuario_id_usuario": 3
+    }
+},
+{
+    "model": "core.detallecarrito",
+    "pk": 1,
+    "fields": {
+        "id_producto": 2,
+        "cantidad": 1,
+        "precio_unitario": "53900.00"
+    }
+},
+{
+    "model": "core.detallecarrito",
+    "pk": 1,
+    "fields": {
+        "id_producto": 3,
+        "cantidad": 1,
+        "precio_unitario": "76500.00"
+    }
+},
+{
+    "model": "core.detallecarrito",
+    "pk": 2,
+    "fields": {
+        "id_producto": 1,
+        "cantidad": 1,
+        "precio_unitario": "189900.00"
+    }
+}
+]

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mascotas - MascotasNet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link active" href="/mascotas/">Mascotas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tienda/">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/articulos/">Artículos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/carrito/">🛒 Carrito</a></li>
+                    {% if user.is_authenticated %}<li class="nav-item"><span class="nav-link" style="color:var(--text-muted); font-size:14px;">{{ user.first_name|default:user.username }}</span></li>{% if usuario.rol == "administrador" %}<li class="nav-item"><a class="nav-link" href="/admin-panel/productos/" style="color:var(--primary); font-weight:600;">Panel Admin</a></li>{% endif %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>{% else %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/login/">Ingresar</a></li>{% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Adopción</span>
+            <h1>Catálogo de Mascotas</h1>
+            <p>Encuentra a tu compañero ideal y dale un hogar lleno de amor.</p>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'success' }} alert-dismissible fade show mb-4" role="alert" style="border-radius:10px;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="filter-bar">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Especie</label>
+                        <select class="form-select">
+                            <option>Todas las especies</option>
+                            <option>Perro</option>
+                            <option>Gato</option>
+                            <option>Conejo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Estado</label>
+                        <select class="form-select">
+                            <option>Todos los estados</option>
+                            <option>Disponible</option>
+                            <option>En proceso</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Edad</label>
+                        <select class="form-select">
+                            <option>Todas las edades</option>
+                            <option>Joven (0-1 año)</option>
+                            <option>Adulto (1-7 años)</option>
+                            <option>Mayor (+7 años)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100">🔍 Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for mascota in mascotas %}
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #FFE5D9, #FFDCC8);">
+                            {% if mascota.imagen %}
+                                <img src="{% static mascota.imagen %}" alt="{{ mascota.nombre }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;">
+                            {% else %}
+                                <img src="{% static 'img/no-image.svg' %}" alt="Mascota sin imagen" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;">
+                            {% endif %}
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">{{ mascota.nombre }}</h5>
+                                {% if mascota.estado_adopcion|lower == 'disponible' %}
+                                    <span class="badge bg-success">Disponible</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{ mascota.estado_adopcion }}</span>
+                                {% endif %}
+                            </div>
+                            <p class="card-text mb-1">{% if mascota.especie|lower == 'perro' %}🐶{% elif mascota.especie|lower == 'gato' %}🐱{% else %}🐾{% endif %} {{ mascota.especie }} · {{ mascota.raza }}</p>
+                            <p class="card-text mb-3">📅 {{ mascota.edad }} años · {{ mascota.sexo }}</p>
+                            <button class="btn btn-primary btn-sm w-100 mt-auto" data-bs-toggle="modal" data-bs-target="#mascotaModal{{ mascota.id_mascota }}">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Detalles -->
+                <div class="modal fade" id="mascotaModal{{ mascota.id_mascota }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="border-radius:16px; border:none;">
+                            <div class="modal-header" style="border-bottom:none; padding-bottom:0;">
+                                <h5 class="modal-title" style="font-weight:700;">Conoce a {{ mascota.nombre }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="height:200px; border-radius:12px; background: linear-gradient(135deg, #FFE5D9, #FFDCC8); margin-bottom:16px; display:flex; align-items:center; justify-content:center; font-size:64px; overflow:hidden;">
+                                    {% if mascota.imagen %}
+                                        <img src="{% static mascota.imagen %}" style="width:100%;height:100%;object-fit:cover;">
+                                    {% else %}
+                                        <img src="{% static 'img/no-image.svg' %}" alt="Mascota sin imagen" style="width:100%;height:100%;object-fit:cover;">
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="badge bg-light text-dark" style="font-size:14px; padding:8px 12px;">Especie: {{ mascota.especie }}</span>
+                                    <span class="badge bg-light text-dark" style="font-size:14px; padding:8px 12px;">Raza: {{ mascota.raza }}</span>
+                                </div>
+                                <p style="font-size:15px; color:var(--text-muted);">{{ mascota.descripcion|default:"No hay descripción disponible." }}</p>
+                                <hr style="border-color:var(--border);">
+                                <ul class="list-unstyled" style="font-size:14px; color:var(--text-muted);">
+                                    <li class="mb-2"><strong>🩺 Estado de salud:</strong> {{ mascota.estado_salud }}</li>
+                                    <li class="mb-2"><strong>🗓️ Ingreso:</strong> {{ mascota.fecha_ingreso|date:"d" }} de {{ mascota.fecha_ingreso|date:"F, Y" }}</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer" style="border-top:none; display: block;">
+                                {% if user.is_authenticated %}
+                                    <form action="{% url 'solicitar_adopcion' mascota.id_mascota %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="mb-3 text-start">
+                                            <label for="notas{{ mascota.id_mascota }}" class="form-label" style="font-weight:600; font-size:14px; color:var(--text-dark);">Notas o Mensaje (Opcional):</label>
+                                            <textarea class="form-control" id="notas{{ mascota.id_mascota }}" name="notas" rows="2" placeholder="Cuéntanos por qué te interesa adoptar a {{ mascota.nombre }}..." style="font-size:14px; border-radius:8px;"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Solicitar Adopción</button>
+                                    </form>
+                                {% else %}
+                                    <div class="alert alert-info text-center mb-3" style="font-size:14px; border-radius:10px;">
+                                        Debes iniciar sesión para solicitar la adopción de una mascota.
+                                    </div>
+                                    <a href="{% url 'login' %}?next=/mascotas/" class="btn btn-primary w-100">Iniciar Sesión para Adoptar</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <div style="font-size:48px; margin-bottom:16px;">🏠</div>
+                    <p style="color:var(--text-muted); font-size:18px;">No hay mascotas disponibles en este momento.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <div class="footer-brand"><img src="{% static 'img/logo.png' %}" alt="Logo" style="width:36px;height:36px;object-fit:contain;border-radius:8px;"> MascotasNet</div>
+                    <p class="footer-tagline">Conectando mascotas con familias amorosas. Cada adopción cambia dos vidas.</p>
+                </div>
+                <div class="col-md-7 d-flex justify-content-md-end align-items-end">
+                    <div class="d-flex gap-4" style="font-size:14px;">
+                        <a href="/mascotas/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Mascotas</a>
+                        <a href="/tienda/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Tienda</a>
+                        <a href="/articulos/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Artículos</a>
+                        <a href="/login/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Ingresar</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <p class="footer-bottom">© 2026 MascotasNet — Diseñado con ❤️ para cambiar vidas de mascotas</p>
+        </div>
+    </footer>
+
+    {% include 'chatbot.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

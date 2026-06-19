@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artículos - MascotasNet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link" href="/mascotas/">Mascotas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tienda/">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/articulos/">Artículos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/carrito/">🛒 Carrito</a></li>
+                    {% if user.is_authenticated %}<li class="nav-item"><span class="nav-link" style="color:var(--text-muted); font-size:14px;">{{ user.first_name|default:user.username }}</span></li>{% if usuario.rol == "administrador" %}<li class="nav-item"><a class="nav-link" href="/admin-panel/productos/" style="color:var(--primary); font-weight:600;">Panel Admin</a></li>{% endif %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>{% else %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/login/">Ingresar</a></li>{% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Blog</span>
+            <h1>Artículos Informativos</h1>
+            <p>Guías y consejos escritos por expertos para el cuidado de tus mascotas.</p>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+
+            <div class="filter-bar">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select">
+                            <option>Todas las categorías</option>
+                            <option>Cuidado General</option>
+                            <option>Nutrición</option>
+                            <option>Salud y Medicina</option>
+                            <option>Comportamiento</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Buscar artículos</label>
+                        <input type="text" class="form-control" placeholder="Ej: alimentación para perros...">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for articulo in articulos %}
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #FFE5D9, #FFDCC8); height:180px;">
+                            {% if articulo.imagen %}
+                                <img src="{% static articulo.imagen %}" alt="{{ articulo.titulo }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;">
+                            {% else %}
+                                <img src="{% static 'img/no-image.svg' %}" alt="Artículo sin imagen" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;">
+                            {% endif %}
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--primary);">{{ articulo.categoria }}</span>
+                            <h5 class="card-title mt-1">{{ articulo.titulo }}</h5>
+                            <p class="card-text">{{ articulo.contenido|truncatewords:20 }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-3">
+                                <small style="color:var(--text-muted);">📅 {{ articulo.fecha_publicacion|date:"d" }} de {{ articulo.fecha_publicacion|date:"F, Y" }}</small>
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#articuloModal{{ articulo.codigo_articulo }}">Leer Más →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Lectura -->
+                <div class="modal fade" id="articuloModal{{ articulo.codigo_articulo }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content" style="border-radius:16px; border:none;">
+                            <div class="modal-header" style="border-bottom:none; padding-bottom:0;">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body px-4 px-md-5 pb-5">
+                                <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--primary);">{{ articulo.categoria }}</span>
+                                <h2 class="mt-2 mb-3" style="font-weight:700;">{{ articulo.titulo }}</h2>
+                                <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 1px solid var(--border);">
+                                    <div style="width:40px;height:40px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;margin-right:12px;">✍️</div>
+                                    <div>
+                                        <p style="margin:0;font-size:14px;font-weight:600;">{{ articulo.usuario_id_usuario.nombre }}</p>
+                                        <p style="margin:0;font-size:12px;color:var(--text-muted);">Publicado el {{ articulo.fecha_publicacion|date:"d" }} de {{ articulo.fecha_publicacion|date:"F, Y" }}</p>
+                                    </div>
+                                </div>
+                                {% if articulo.imagen %}
+                                <div style="height:300px; border-radius:12px; background: linear-gradient(135deg, #FFE5D9, #FFDCC8); margin-bottom:24px; overflow:hidden;">
+                                    <img src="{% static articulo.imagen %}" style="width:100%;height:100%;object-fit:cover;">
+                                </div>
+                                {% else %}
+                                <div style="height:300px; border-radius:12px; background: linear-gradient(135deg, #FFE5D9, #FFDCC8); margin-bottom:24px; overflow:hidden;">
+                                    <img src="{% static 'img/no-image.svg' %}" alt="Artículo sin imagen" style="width:100%;height:100%;object-fit:cover;">
+                                </div>
+                                {% endif %}
+                                <div style="font-size:16px; line-height:1.8; color:var(--text-color);">
+                                    {{ articulo.contenido|linebreaks }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <div style="font-size:48px; margin-bottom:16px;">📰</div>
+                    <p style="color:var(--text-muted); font-size:18px;">No hay artículos publicados en este momento.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <div class="footer-brand"><img src="{% static 'img/logo.png' %}" alt="Logo" style="width:36px;height:36px;object-fit:contain;border-radius:8px;"> MascotasNet</div>
+                    <p class="footer-tagline">Conectando mascotas con familias amorosas. Cada adopción cambia dos vidas.</p>
+                </div>
+                <div class="col-md-7 d-flex justify-content-md-end align-items-end">
+                    <div class="d-flex gap-4" style="font-size:14px;">
+                        <a href="/mascotas/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Mascotas</a>
+                        <a href="/tienda/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Tienda</a>
+                        <a href="/articulos/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Artículos</a>
+                        <a href="/login/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Ingresar</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <p class="footer-bottom">© 2026 MascotasNet — Diseñado con ❤️ para cambiar vidas de mascotas</p>
+        </div>
+    </footer>
+
+    {% include 'chatbot.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

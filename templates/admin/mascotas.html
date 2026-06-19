@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Mascotas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><span class="nav-link" style="color:var(--primary); font-weight:600;">Panel Admin</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Administrador</span>
+            <h1>Gestión de Mascotas</h1>
+            <p>Agrega o elimina mascotas del catálogo de adopción.</p>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+
+            <div class="mb-4 border-bottom">
+                <ul class="nav nav-tabs" style="border-bottom:none;">
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/productos/">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin-panel/mascotas/" style="font-weight:600;">Mascotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/articulos/">Artículos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/solicitudes/">Solicitudes</a>
+                    </li>
+                </ul>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success mb-4" style="border-radius:10px;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 style="font-family:'Playfair Display',serif; margin:0;">Mascotas ({{ mascotas.count }})</h5>
+                <a href="/admin-panel/mascotas/agregar/" class="btn btn-primary">+ Agregar Mascota</a>
+            </div>
+
+            <div style="background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow-sm);">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Especie / Raza</th>
+                                <th>Edad</th>
+                                <th>Salud</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mascota in mascotas %}
+                            <tr>
+                                <td>{{ mascota.id_mascota }}</td>
+                                <td style="font-weight:600;">{{ mascota.nombre }}</td>
+                                <td>{{ mascota.especie }} - {{ mascota.raza }}</td>
+                                <td>{{ mascota.edad }} años</td>
+                                <td>{{ mascota.estado_salud }}</td>
+                                <td>
+                                    {% if mascota.estado_adopcion == 'Disponible' %}
+                                        <span class="badge bg-success">Disponible</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">{{ mascota.estado_adopcion }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="/admin-panel/mascotas/eliminar/{{ mascota.id_mascota }}/" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta mascota?')">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center" style="color:var(--text-muted); padding:40px;">No hay mascotas registradas.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <hr class="footer-divider" style="margin-top:0;">
+            <p class="footer-bottom">2026 MascotasNet</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

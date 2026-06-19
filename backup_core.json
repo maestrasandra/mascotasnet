@@ -1,0 +1,117 @@
+[
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "Admin",
+            "apellido": "MascotasNet",
+            "correo": "admin@mascotasnet.com",
+            "contraseña_hash": "temporal_django_hashea_esto",
+            "rol": "administrador",
+            "fecha_registro": "2026-05-19T11:15:47Z",
+            "activo": 1
+        }
+    },
+    {
+        "model": "core.mascota",
+        "pk": 1,
+        "fields": {
+            "nombre": "Max",
+            "especie": "Perro",
+            "raza": "Labrador",
+            "edad": 3,
+            "sexo": "Macho",
+            "estado_salud": "Excelente",
+            "descripcion": "Muy amigable y juguetón. Le encanta correr.",
+            "imagen": "",
+            "estado_adopcion": "Disponible",
+            "fecha_ingreso": "2026-05-19"
+        }
+    },
+    {
+        "model": "core.mascota",
+        "pk": 2,
+        "fields": {
+            "nombre": "Luna",
+            "especie": "Gato",
+            "raza": "Persa",
+            "edad": 2,
+            "sexo": "Hembra",
+            "estado_salud": "Excelente",
+            "descripcion": "Tranquila y cariñosa. Ideal para apartamentos.",
+            "imagen": "",
+            "estado_adopcion": "Disponible",
+            "fecha_ingreso": "2026-05-19"
+        }
+    },
+    {
+        "model": "core.mascota",
+        "pk": 3,
+        "fields": {
+            "nombre": "Bolita",
+            "especie": "Conejo",
+            "raza": "Holandés",
+            "edad": 1,
+            "sexo": "Macho",
+            "estado_salud": "Buena",
+            "descripcion": "Pequeño y curioso. Ya está en proceso de adopción.",
+            "imagen": "",
+            "estado_adopcion": "En proceso",
+            "fecha_ingreso": "2026-05-19"
+        }
+    },
+    {
+        "model": "core.producto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Alimento Premium para Perros",
+            "categoria": "Alimentos",
+            "descripcion": "Alimento balanceado bolsa 5kg, rico en proteínas.",
+            "precio": "189900.00",
+            "stock": 15,
+            "imagen": "",
+            "disponibilidad": 1,
+            "usuario_id_usuario": 1
+        }
+    },
+    {
+        "model": "core.producto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Juguete Interactivo para Gatos",
+            "categoria": "Juguetes",
+            "descripcion": "Pelota con cascabel, resistente y segura.",
+            "precio": "53900.00",
+            "stock": 25,
+            "imagen": "",
+            "disponibilidad": 1,
+            "usuario_id_usuario": 1
+        }
+    },
+    {
+        "model": "core.producto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Shampoo Hipoalergénico",
+            "categoria": "Cuidado",
+            "descripcion": "Shampoo suave para todo tipo de pelaje, 500ml.",
+            "precio": "76500.00",
+            "stock": 30,
+            "imagen": "",
+            "disponibilidad": 1,
+            "usuario_id_usuario": 1
+        }
+    },
+    {
+        "model": "core.articuloinformativo",
+        "pk": 1,
+        "fields": {
+            "titulo": "Guía Completa de Cuidado de Perros",
+            "contenido": "Aprende todo sobre el cuidado diario de tu perro...",
+            "fecha_publicacion": "2026-05-19",
+            "categoria": "Cuidado General",
+            "imagen": "",
+            "usuario_id_usuario": 1
+        }
+    }
+]

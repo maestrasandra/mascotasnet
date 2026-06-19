@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto - MascotasNet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-icon-img" style="width:42px;height:42px;object-fit:contain;">
+                <span>MascotasNet</span>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link" href="/admin-panel/productos/">Productos</a></li>
+                    <li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="section-label">Administrador</span>
+            <h1>Agregar Producto</h1>
+            <p>Completa el formulario para agregar un nuevo producto a la tienda.</p>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="mb-4 border-bottom">
+                <ul class="nav nav-tabs" style="border-bottom:none;">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin-panel/productos/" style="font-weight:600;">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/mascotas/">Mascotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/articulos/">Artículos</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+                    <div style="background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:36px; box-shadow:var(--shadow-sm);">
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger mb-4" style="border-radius:10px;">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label">Nombre del producto</label>
+                                <input type="text" name="nombre" class="form-control" placeholder="Ej: Alimento Premium para Perros" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Categoria</label>
+                                <select name="categoria" class="form-select" required>
+                                    <option value="">Selecciona una categoria</option>
+                                    <option value="Alimentos">Alimentos</option>
+                                    <option value="Juguetes">Juguetes</option>
+                                    <option value="Cuidado">Cuidado</option>
+                                    <option value="Accesorios">Accesorios</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Descripcion</label>
+                                <textarea name="descripcion" class="form-control" rows="3" placeholder="Describe el producto..." required></textarea>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Precio (COP)</label>
+                                    <input type="number" name="precio" class="form-control" placeholder="Ej: 45000" min="0" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number" name="stock" class="form-control" placeholder="Ej: 10" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Imagen</label>
+                                <input type="file" name="imagen" class="form-control" accept="image/*">
+                            </div>
+
+                            <div class="d-flex gap-3 mt-4">
+                                <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                                <a href="/admin-panel/productos/" class="btn btn-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <hr class="footer-divider" style="margin-top:0;">
+            <p class="footer-bottom">2026 MascotasNet</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
