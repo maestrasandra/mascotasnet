@@ -78,8 +78,15 @@ WSGI_APPLICATION = 'mascotasnet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import sys
 MYSQL_HOST = os.environ.get('MYSQLHOST')
 MYSQL_URL = os.environ.get('MYSQL_URL') or os.environ.get('DATABASE_URL')
+
+print("--- DEBUG DATABASE CONFIG ---", file=sys.stderr)
+print(f"MYSQLHOST raw value: {os.environ.get('MYSQLHOST')!r}", file=sys.stderr)
+print(f"MYSQL_URL raw value: {os.environ.get('MYSQL_URL')!r}", file=sys.stderr)
+print(f"DATABASE_URL raw value: {os.environ.get('DATABASE_URL')!r}", file=sys.stderr)
+print("-----------------------------", file=sys.stderr)
 
 if MYSQL_HOST or MYSQL_URL:
     DATABASES = {
