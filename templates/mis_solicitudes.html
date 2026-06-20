@@ -43,72 +43,140 @@
     <div class="page-header">
         <div class="container">
             <span class="section-label">Mi Cuenta</span>
-            <h1>Mis Solicitudes de Adopción</h1>
-            <p>Sigue el estado de tus solicitudes para darle un hogar a una mascota.</p>
+            <h1>Mi Panel de Usuario</h1>
+            <p>Gestiona tus solicitudes de adopción e historial de compras.</p>
         </div>
     </div>
 
     <section class="py-5">
         <div class="container">
-            <div class="card p-4 border-0 shadow-sm" style="border-radius: 16px;">
-                <div class="table-responsive">
-                    <table class="table align-middle" style="margin-bottom: 0;">
-                        <thead>
-                            <tr style="color: var(--text-muted); font-size: 14px; border-bottom: 2px solid var(--border);">
-                                <th scope="col" style="padding-bottom: 12px;">Mascota</th>
-                                <th scope="col" style="padding-bottom: 12px;">Fecha Solicitud</th>
-                                <th scope="col" style="padding-bottom: 12px;">Estado</th>
-                                <th scope="col" style="padding-bottom: 12px;">Comentarios / Notas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for solicitud in solicitudes %}
-                            <tr style="border-bottom: 1px solid var(--border);">
-                                <td style="padding: 16px 0;">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div style="width: 50px; height: 50px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #FFE5D9, #FFDCC8);">
-                                            {% if solicitud.mascota_id_mascota.imagen %}
-                                                <img src="{% static solicitud.mascota_id_mascota.imagen %}" alt="{{ solicitud.mascota_id_mascota.nombre }}" style="width: 100%; height: 100%; object-fit: cover;">
+            
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs mb-4 border-0 justify-content-start gap-2" id="userDashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="adoptions-tab" data-bs-toggle="tab" data-bs-target="#adoptions" type="button" role="tab" aria-controls="adoptions" aria-selected="true" style="border: none; border-radius: 8px; font-weight: 600; padding: 10px 20px; transition: all 0.2s;">🐾 Mis Adopciones</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchases" type="button" role="tab" aria-controls="purchases" aria-selected="false" style="border: none; border-radius: 8px; font-weight: 600; padding: 10px 20px; transition: all 0.2s;">🛍️ Historial de Compras</button>
+                </li>
+            </ul>
+            
+            <!-- Tab Content -->
+            <div class="tab-content" id="userDashboardTabsContent">
+                
+                <!-- Tab 1: Adoptions -->
+                <div class="tab-pane fade show active" id="adoptions" role="tabpanel" aria-labelledby="adoptions-tab">
+                    <div class="card p-4 border-0 shadow-sm" style="border-radius: 16px;">
+                        <div class="table-responsive">
+                            <table class="table align-middle" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr style="color: var(--text-muted); font-size: 14px; border-bottom: 2px solid var(--border);">
+                                        <th scope="col" style="padding-bottom: 12px;">Mascota</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Fecha Solicitud</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Estado</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Comentarios / Notas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for solicitud in solicitudes %}
+                                    <tr style="border-bottom: 1px solid var(--border);">
+                                        <td style="padding: 16px 0;">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div style="width: 50px; height: 50px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #FFE5D9, #FFDCC8);">
+                                                    {% if solicitud.mascota_id_mascota.imagen %}
+                                                        <img src="{% static solicitud.mascota_id_mascota.imagen %}" alt="{{ solicitud.mascota_id_mascota.nombre }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    {% else %}
+                                                        <img src="{% static 'img/no-image.svg' %}" alt="Sin imagen" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    {% endif %}
+                                                </div>
+                                                <div>
+                                                    <h6 style="margin: 0; font-weight: 600;">{{ solicitud.mascota_id_mascota.nombre }}</h6>
+                                                    <span style="font-size: 13px; color: var(--text-muted);">{{ solicitud.mascota_id_mascota.especie }} · {{ solicitud.mascota_id_mascota.raza }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ solicitud.fecha_solicitud|date:"d" }} de {{ solicitud.fecha_solicitud|date:"F, Y" }}</td>
+                                        <td>
+                                            {% if solicitud.estado|lower == 'pendiente' %}
+                                                <span class="badge bg-warning text-dark" style="padding: 6px 12px; border-radius: 6px;">Pendiente</span>
+                                            {% elif solicitud.estado|lower == 'aprobada' %}
+                                                <span class="badge bg-success" style="padding: 6px 12px; border-radius: 6px;">Aprobada 🎉</span>
                                             {% else %}
-                                                <img src="{% static 'img/no-image.svg' %}" alt="Sin imagen" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <span class="badge bg-danger" style="padding: 6px 12px; border-radius: 6px;">Rechazada</span>
                                             {% endif %}
-                                        </div>
-                                        <div>
-                                            <h6 style="margin: 0; font-weight: 600;">{{ solicitud.mascota_id_mascota.nombre }}</h6>
-                                            <span style="font-size: 13px; color: var(--text-muted);">{{ solicitud.mascota_id_mascota.especie }} · {{ solicitud.mascota_id_mascota.raza }}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{ solicitud.fecha_solicitud|date:"d" }} de {{ solicitud.fecha_solicitud|date:"F, Y" }}</td>
-                                <td>
-                                    {% if solicitud.estado|lower == 'pendiente' %}
-                                        <span class="badge bg-warning text-dark" style="padding: 6px 12px; border-radius: 6px;">Pendiente</span>
-                                    {% elif solicitud.estado|lower == 'aprobada' %}
-                                        <span class="badge bg-success" style="padding: 6px 12px; border-radius: 6px;">Aprobada 🎉</span>
-                                    {% else %}
-                                        <span class="badge bg-danger" style="padding: 6px 12px; border-radius: 6px;">Rechazada</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if solicitud.notas %}
-                                        <p style="margin: 0; font-size: 14px; color: var(--text-dark);">{{ solicitud.notas }}</p>
-                                    {% else %}
-                                        <span style="font-size: 13px; color: var(--text-muted); font-style: italic;">Sin comentarios adicionales.</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4" class="text-center py-5">
-                                    <div style="font-size: 48px; margin-bottom: 16px;">🐾</div>
-                                    <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 16px;">Aún no tienes ninguna solicitud de adopción registrada.</p>
-                                    <a href="/mascotas/" class="btn btn-primary btn-sm">Ver Catálogo de Mascotas</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td>
+                                            {% if solicitud.notas %}
+                                                <p style="margin: 0; font-size: 14px; color: var(--text-dark);">{{ solicitud.notas }}</p>
+                                            {% else %}
+                                                <span style="font-size: 13px; color: var(--text-muted); font-style: italic;">Sin comentarios adicionales.</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5">
+                                            <div style="font-size: 48px; margin-bottom: 16px;">🐾</div>
+                                            <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 16px;">Aún no tienes ninguna solicitud de adopción registrada.</p>
+                                            <a href="/mascotas/" class="btn btn-primary btn-sm">Ver Catálogo de Mascotas</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Tab 2: Purchases -->
+                <div class="tab-pane fade" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
+                    <div class="card p-4 border-0 shadow-sm" style="border-radius: 16px;">
+                        <div class="table-responsive">
+                            <table class="table align-middle" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr style="color: var(--text-muted); font-size: 14px; border-bottom: 2px solid var(--border);">
+                                        <th scope="col" style="padding-bottom: 12px;">ID Compra</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Fecha de Compra</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Productos Adquiridos</th>
+                                        <th scope="col" style="padding-bottom: 12px;">Total Pagado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for compra in compras %}
+                                    <tr style="border-bottom: 1px solid var(--border);">
+                                        <td style="padding: 16px 0; font-weight: 600; color: var(--primary);">#{{ compra.id_carrito }}</td>
+                                        <td>{{ compra.fecha_creacion|date:"d" }} de {{ compra.fecha_creacion|date:"F, Y" }}</td>
+                                        <td>
+                                            <ul style="margin: 0; padding-left: 18px; font-size: 14px; color: var(--text-dark);">
+                                                {% for detalle in compra.detalles %}
+                                                    <li>
+                                                        <strong>{{ detalle.cantidad }}x</strong> {{ detalle.id_producto.nombre }} 
+                                                        <span class="text-muted" style="font-size: 12px;">(${{ detalle.precio_unitario|floatformat:0 }} c/u)</span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: 700; color: var(--secondary); font-size: 16px;">
+                                                ${{ compra.total|floatformat:0 }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5">
+                                            <div style="font-size: 48px; margin-bottom: 16px;">🛒</div>
+                                            <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 16px;">Aún no has realizado ninguna compra en nuestra tienda.</p>
+                                            <a href="/tienda/" class="btn btn-success btn-sm">Ir a la Tienda</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </section>

@@ -522,7 +522,41 @@ def admin_rechazar_solicitud(request, solicitud_id):
 @cliente_required
 def mis_solicitudes(request):
     usuario = get_usuario(request)
+    # Solicitudes de adopción
     solicitudes = SolicitudAdopcion.objects.filter(usuario_id_usuario=usuario).select_related('mascota_id_mascota').order_by('-fecha_solicitud')
+    
+    # Historial de compras (carritos cerrados)
+    compras_list = Carrito.objects.filter(usuario_id_usuario=usuario, estado='cerrado').order_by('-fecha_creacion')
+    
+    # Fetch all details for these carts
+    detalles_compras = DetalleCarrito.objects.filter(id_carrito__in=compras_list).select_related('id_producto')
+    
+    # Group details by cart ID
+    detalles_por_carrito = {}
+    for detalle in detalles_compras:
+        carrito_id = detalle.id_carrito_id
+        if carrito_id not in detalles_por_carrito:
+            detalles_por_carrito[carrito_id] = []
+        detalles_por_carrito[carrito_id].append(detalle)
+        
+    compras_con_totales = []
+    for compra in compras_list:
+        detalles = detalles_por_carrito.get(compra.id_carrito, [])
+        subtotal = sum(d.precio_unitario * d.cantidad for d in detalles)
+        impuesto = subtotal * Decimal('0.19') if subtotal > 0 else Decimal('0')
+        envio = Decimal('15000') if subtotal > 0 else Decimal('0')
+        total = subtotal + impuesto + envio
+        
+        compras_con_totales.append({
+            'id_carrito': compra.id_carrito,
+            'fecha_creacion': compra.fecha_creacion,
+            'detalles': detalles,
+            'total': total
+        })
+    
     contexto = get_contexto(request)
-    contexto['solicitudes'] = solicitudes
+    contexto.update({
+        'solicitudes': solicitudes,
+        'compras': compras_con_totales
+    })
     return render(request, 'mis_solicitudes.html', contexto)
