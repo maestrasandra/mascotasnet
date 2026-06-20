@@ -379,7 +379,7 @@ import google.generativeai as genai
 from django.http import JsonResponse
 import json
 
-genai.configure(api_key="AIzaSyB6vbRk-ScFQdZbz5z3zOJRoz2qMHPqYPk")
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 modelo = genai.GenerativeModel("models/gemini-2.5-flash")
 
 def chat_ia(request):
