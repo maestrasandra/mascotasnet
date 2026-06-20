@@ -25,6 +25,7 @@
                     <li class="nav-item"><a class="nav-link" href="/tienda/">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/articulos/">Artículos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/carrito/">🛒 Carrito</a></li>
+                    {% if user.is_authenticated %}<li class="nav-item"><a class="nav-link" href="/mis-solicitudes/">Mis Solicitudes</a></li>{% endif %}
                     {% if user.is_authenticated %}<li class="nav-item"><span class="nav-link" style="color:var(--text-muted); font-size:14px;">{{ user.first_name|default:user.username }}</span></li>{% if usuario.rol == "administrador" %}<li class="nav-item"><a class="nav-link" href="/admin-panel/productos/" style="color:var(--primary); font-weight:600;">Panel Admin</a></li>{% endif %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/logout/" style="background:#E53E3E !important;">Salir</a></li>{% else %}<li class="nav-item ms-2"><a class="nav-link btn-nav-login" href="/login/">Ingresar</a></li>{% endif %}
                 </ul>
             </div>

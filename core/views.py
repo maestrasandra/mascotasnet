@@ -517,3 +517,12 @@ def admin_rechazar_solicitud(request, solicitud_id):
         
     messages.success(request, f'La solicitud de adopción de {solicitud.usuario_id_usuario.nombre} para {mascota.nombre} ha sido rechazada.')
     return redirect('admin_solicitudes')
+
+
+@cliente_required
+def mis_solicitudes(request):
+    usuario = get_usuario(request)
+    solicitudes = SolicitudAdopcion.objects.filter(usuario_id_usuario=usuario).select_related('mascota_id_mascota').order_by('-fecha_solicitud')
+    contexto = get_contexto(request)
+    contexto['solicitudes'] = solicitudes
+    return render(request, 'mis_solicitudes.html', contexto)
