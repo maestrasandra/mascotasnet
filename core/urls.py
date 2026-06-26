@@ -29,15 +29,23 @@ urlpatterns = [
     path('eliminar/<int:producto_id>/', views.eliminar_carrito, name='eliminar_carrito'),
     path('admin-panel/productos/', views.admin_productos, name='admin_productos'),
     path('admin-panel/productos/agregar/', views.admin_agregar_producto, name='admin_agregar_producto'),
+    path('admin-panel/productos/editar/<int:producto_id>/', views.admin_editar_producto, name='admin_editar_producto'),
     path('admin-panel/productos/eliminar/<int:producto_id>/', views.admin_eliminar_producto, name='admin_eliminar_producto'),
     
     path('admin-panel/mascotas/', views.admin_mascotas, name='admin_mascotas'),
     path('admin-panel/mascotas/agregar/', views.admin_agregar_mascota, name='admin_agregar_mascota'),
+    path('admin-panel/mascotas/editar/<int:mascota_id>/', views.admin_editar_mascota, name='admin_editar_mascota'),
     path('admin-panel/mascotas/eliminar/<int:mascota_id>/', views.admin_eliminar_mascota, name='admin_eliminar_mascota'),
     
     path('admin-panel/articulos/', views.admin_articulos, name='admin_articulos'),
     path('admin-panel/articulos/agregar/', views.admin_agregar_articulo, name='admin_agregar_articulo'),
+    path('admin-panel/articulos/editar/<int:articulo_id>/', views.admin_editar_articulo, name='admin_editar_articulo'),
     path('admin-panel/articulos/eliminar/<int:articulo_id>/', views.admin_eliminar_articulo, name='admin_eliminar_articulo'),
+
+    path('admin-panel/usuarios/', views.admin_usuarios, name='admin_usuarios'),
+    path('admin-panel/usuarios/agregar/', views.admin_agregar_usuario, name='admin_agregar_usuario'),
+    path('admin-panel/usuarios/editar/<int:usuario_id>/', views.admin_editar_usuario, name='admin_editar_usuario'),
+    path('admin-panel/usuarios/eliminar/<int:usuario_id>/', views.admin_eliminar_usuario, name='admin_eliminar_usuario'),
 
     path('listar/', views.listar_productos, name='listar'),
     path('crear/', views.crear_producto, name='crear'),

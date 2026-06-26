@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Artículos</title>
+    <title>Admin - Usuarios Registrados</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/mascotasnet.css' %}" rel="stylesheet">
 </head>
@@ -29,8 +29,8 @@
     <div class="page-header">
         <div class="container">
             <span class="section-label">Administrador</span>
-            <h1>Gestión de Artículos</h1>
-            <p>Administra los artículos publicados en el blog.</p>
+            <h1>Gestión de Usuarios</h1>
+            <p>Administra los usuarios registrados en el sistema, cambia sus roles y activa/desactiva cuentas.</p>
         </div>
     </div>
 
@@ -46,57 +46,74 @@
                         <a class="nav-link text-muted" href="/admin-panel/mascotas/">Mascotas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin-panel/articulos/" style="font-weight:600;">Artículos</a>
+                        <a class="nav-link text-muted" href="/admin-panel/articulos/">Artículos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-muted" href="/admin-panel/solicitudes/">Solicitudes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-muted" href="/admin-panel/usuarios/">Usuarios</a>
+                        <a class="nav-link active" href="/admin-panel/usuarios/" style="font-weight:600;">Usuarios</a>
                     </li>
                 </ul>
             </div>
 
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-success mb-4" style="border-radius:10px;">{{ message }}</div>
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="border-radius:10px;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 {% endfor %}
             {% endif %}
 
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 style="font-family:'Playfair Display',serif; margin:0;">Artículos ({{ articulos.count }})</h5>
-                <a href="/admin-panel/articulos/agregar/" class="btn btn-primary">+ Agregar Artículo</a>
+                <h5 style="font-family:'Playfair Display',serif; margin:0;">Usuarios Registrados ({{ usuarios.count }})</h5>
+                <a href="/admin-panel/usuarios/agregar/" class="btn btn-primary">+ Agregar Usuario</a>
             </div>
 
             <div style="background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow-sm);">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table align-middle">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Título</th>
-                                <th>Categoría</th>
-                                <th>Fecha Publicación</th>
-                                <th>Autor</th>
+                                <th>Nombre Completo</th>
+                                <th>Correo Electrónico</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Fecha Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for articulo in articulos %}
+                            {% for u in usuarios %}
                             <tr>
-                                <td>{{ articulo.codigo_articulo }}</td>
-                                <td style="font-weight:600;">{{ articulo.titulo }}</td>
-                                <td>{{ articulo.categoria }}</td>
-                                <td>{{ articulo.fecha_publicacion|date:"d" }} de {{ articulo.fecha_publicacion|date:"F, Y" }}</td>
-                                <td>{{ articulo.usuario_id_usuario.nombre }}</td>
+                                <td>{{ u.id_usuario }}</td>
+                                <td style="font-weight:600;">{{ u.nombre }} {{ u.apellido }}</td>
+                                <td>{{ u.correo }}</td>
                                 <td>
-                                    <a href="/admin-panel/articulos/editar/{{ articulo.codigo_articulo }}/" class="btn btn-warning btn-sm me-1">Editar</a>
-                                    <a href="/admin-panel/articulos/eliminar/{{ articulo.codigo_articulo }}/" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este artículo?')">Eliminar</a>
+                                    {% if u.rol == 'administrador' %}
+                                        <span class="badge bg-primary">Administrador</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Cliente</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if u.activo %}
+                                        <span class="badge bg-success">Activo</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ u.fecha_registro|date:"d/m/Y H:i" }}</td>
+                                <td>
+                                    <a href="/admin-panel/usuarios/editar/{{ u.id_usuario }}/" class="btn btn-warning btn-sm me-1">Editar</a>
+                                    <a href="/admin-panel/usuarios/eliminar/{{ u.id_usuario }}/" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este usuario? Se eliminarán también sus credenciales de inicio de sesión.')">Eliminar</a>
                                 </td>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="6" class="text-center" style="color:var(--text-muted); padding:40px;">No hay artículos publicados.</td>
+                                <td colspan="7" class="text-center" style="color:var(--text-muted); padding:40px;">No hay usuarios registrados en el sistema.</td>
                             </tr>
                             {% endfor %}
                         </tbody>

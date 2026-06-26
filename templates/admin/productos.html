@@ -51,6 +51,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-muted" href="/admin-panel/solicitudes/">Solicitudes</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/usuarios/">Usuarios</a>
+                    </li>
                 </ul>
             </div>
 
@@ -95,6 +98,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
+                                    <a href="/admin-panel/productos/editar/{{ producto.id_producto }}/" class="btn btn-warning btn-sm me-1">Editar</a>
                                     <a href="/admin-panel/productos/eliminar/{{ producto.id_producto }}/" class="btn btn-danger btn-sm" onclick="return confirm('Seguro que deseas eliminar este producto?')">Eliminar</a>
                                 </td>
                             </tr>

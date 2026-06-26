@@ -62,7 +62,32 @@ def inicio(request):
 
 def mascotas(request):
     contexto = get_contexto(request)
-    contexto['mascotas'] = Mascota.objects.all()
+    # Ocultar mascotas adoptadas por recomendación de la profesora
+    queryset = Mascota.objects.exclude(estado_adopcion__iexact='Adoptada').exclude(estado_adopcion__iexact='Adoptado')
+    
+    # Obtener filtros de búsqueda
+    especie = request.GET.get('especie', '').strip()
+    estado = request.GET.get('estado', '').strip()
+    edad = request.GET.get('edad', '').strip()
+    
+    if especie and especie != 'Todas las especies':
+        queryset = queryset.filter(especie__iexact=especie)
+        
+    if estado and estado != 'Todos los estados':
+        queryset = queryset.filter(estado_adopcion__iexact=estado)
+        
+    if edad and edad != 'Todas las edades':
+        if 'Joven' in edad:
+            queryset = queryset.filter(edad__lte=1)
+        elif 'Adulto' in edad:
+            queryset = queryset.filter(edad__gt=1, edad__lte=7)
+        elif 'Mayor' in edad:
+            queryset = queryset.filter(edad__gt=7)
+            
+    contexto['mascotas'] = queryset
+    contexto['filtro_especie'] = especie
+    contexto['filtro_estado'] = estado
+    contexto['filtro_edad'] = edad
     return render(request, 'mascotas.html', contexto)
 
 def articulos(request):
@@ -310,6 +335,208 @@ def admin_eliminar_articulo(request, articulo_id):
     articulo.delete()
     messages.success(request, 'Artículo eliminado.')
     return redirect('admin_articulos')
+
+
+@admin_required
+def admin_editar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id_producto=producto_id)
+    if request.method == 'POST':
+        imagen_path = producto.imagen
+        if 'imagen' in request.FILES:
+            imagen_file = request.FILES['imagen']
+            save_path = os.path.join(settings.BASE_DIR, 'templates', 'img')
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+            fs = FileSystemStorage(location=save_path)
+            filename = fs.save(imagen_file.name, imagen_file)
+            imagen_path = f"img/{filename}"
+
+        producto.nombre = request.POST.get('nombre')
+        producto.categoria = request.POST.get('categoria')
+        producto.descripcion = request.POST.get('descripcion')
+        producto.precio = request.POST.get('precio')
+        producto.stock = request.POST.get('stock')
+        producto.imagen = imagen_path
+        producto.save()
+        messages.success(request, 'Producto editado correctamente.')
+        return redirect('admin_productos')
+    contexto = get_contexto(request)
+    contexto['producto'] = producto
+    return render(request, 'admin/editar_producto.html', contexto)
+
+
+@admin_required
+def admin_editar_mascota(request, mascota_id):
+    mascota = get_object_or_404(Mascota, id_mascota=mascota_id)
+    if request.method == 'POST':
+        imagen_path = mascota.imagen
+        if 'imagen' in request.FILES:
+            imagen_file = request.FILES['imagen']
+            save_path = os.path.join(settings.BASE_DIR, 'templates', 'img')
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+            fs = FileSystemStorage(location=save_path)
+            filename = fs.save(imagen_file.name, imagen_file)
+            imagen_path = f"img/{filename}"
+
+        mascota.nombre = request.POST.get('nombre')
+        mascota.especie = request.POST.get('especie')
+        mascota.raza = request.POST.get('raza')
+        mascota.edad = request.POST.get('edad')
+        mascota.sexo = request.POST.get('sexo')
+        mascota.estado_salud = request.POST.get('estado_salud')
+        mascota.descripcion = request.POST.get('descripcion')
+        mascota.estado_adopcion = request.POST.get('estado_adopcion')
+        mascota.fecha_ingreso = request.POST.get('fecha_ingreso')
+        mascota.imagen = imagen_path
+        mascota.save()
+        messages.success(request, 'Mascota editada correctamente.')
+        return redirect('admin_mascotas')
+    
+    fecha_str = mascota.fecha_ingreso.strftime('%Y-%m-%d') if mascota.fecha_ingreso else ''
+    contexto = get_contexto(request)
+    contexto['mascota'] = mascota
+    contexto['fecha_ingreso_str'] = fecha_str
+    return render(request, 'admin/editar_mascota.html', contexto)
+
+
+@admin_required
+def admin_editar_articulo(request, articulo_id):
+    articulo = get_object_or_404(ArticuloInformativo, codigo_articulo=articulo_id)
+    if request.method == 'POST':
+        articulo.titulo = request.POST.get('titulo')
+        articulo.categoria = request.POST.get('categoria')
+        articulo.contenido = request.POST.get('contenido')
+        articulo.fecha_publicacion = request.POST.get('fecha_publicacion')
+        articulo.save()
+        messages.success(request, 'Artículo editado correctamente.')
+        return redirect('admin_articulos')
+    
+    fecha_str = articulo.fecha_publicacion.strftime('%Y-%m-%d') if articulo.fecha_publicacion else ''
+    contexto = get_contexto(request)
+    contexto['articulo'] = articulo
+    contexto['fecha_publicacion_str'] = fecha_str
+    return render(request, 'admin/editar_articulo.html', contexto)
+
+
+@admin_required
+def admin_usuarios(request):
+    contexto = get_contexto(request)
+    contexto['usuarios'] = Usuario.objects.all()
+    return render(request, 'admin/usuarios.html', contexto)
+
+
+@admin_required
+def admin_agregar_usuario(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        correo = request.POST.get('correo')
+        password = request.POST.get('password')
+        rol = request.POST.get('rol', 'cliente')
+        activo = int(request.POST.get('activo', 1))
+
+        if User.objects.filter(username=correo).exists() or Usuario.objects.filter(correo=correo).exists():
+            messages.error(request, 'El correo ya está registrado.')
+            return render(request, 'admin/agregar_usuario.html', get_contexto(request))
+
+        try:
+            # Crear User de Django
+            user = User.objects.create_user(username=correo, email=correo, password=password)
+            user.first_name = nombre
+            user.last_name = apellido
+            user.save()
+
+            # Crear Usuario personalizado
+            Usuario.objects.create(
+                nombre=nombre,
+                apellido=apellido,
+                correo=correo,
+                contraseña_hash='NA',
+                rol=rol,
+                fecha_registro=timezone.now(),
+                activo=activo
+            )
+            messages.success(request, 'Usuario registrado correctamente.')
+            return redirect('admin_usuarios')
+        except Exception as e:
+            messages.error(request, f'Ocurrió un error: {str(e)}')
+
+    return render(request, 'admin/agregar_usuario.html', get_contexto(request))
+
+
+@admin_required
+def admin_editar_usuario(request, usuario_id):
+    usuario = get_object_or_404(Usuario, id_usuario=usuario_id)
+    django_user = User.objects.filter(username=usuario.correo).first()
+    
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        correo = request.POST.get('correo')
+        password = request.POST.get('password')
+        rol = request.POST.get('rol', 'cliente')
+        activo = int(request.POST.get('activo', 1))
+
+        # Validar duplicados si cambia el correo
+        if correo != usuario.correo:
+            if User.objects.filter(username=correo).exists() or Usuario.objects.filter(correo=correo).exists():
+                messages.error(request, 'El correo ya está registrado.')
+                contexto = get_contexto(request)
+                contexto['usuario'] = usuario
+                return render(request, 'admin/editar_usuario.html', contexto)
+
+        try:
+            # Actualizar Django user si existe
+            if django_user:
+                django_user.username = correo
+                django_user.email = correo
+                django_user.first_name = nombre
+                django_user.last_name = apellido
+                if password:
+                    django_user.set_password(password)
+                django_user.save()
+            else:
+                django_user = User.objects.create_user(username=correo, email=correo, password=password or '1234')
+                django_user.first_name = nombre
+                django_user.last_name = apellido
+                django_user.save()
+
+            # Actualizar custom Usuario
+            usuario.nombre = nombre
+            usuario.apellido = apellido
+            usuario.correo = correo
+            usuario.rol = rol
+            usuario.activo = activo
+            usuario.save()
+
+            messages.success(request, 'Usuario actualizado correctamente.')
+            return redirect('admin_usuarios')
+        except Exception as e:
+            messages.error(request, f'Ocurrió un error: {str(e)}')
+
+    contexto = get_contexto(request)
+    contexto['usuario'] = usuario
+    return render(request, 'admin/editar_usuario.html', contexto)
+
+
+@admin_required
+def admin_eliminar_usuario(request, usuario_id):
+    usuario = get_object_or_404(Usuario, id_usuario=usuario_id)
+    
+    if request.user.username == usuario.correo:
+        messages.error(request, 'No puedes eliminar tu propio usuario.')
+        return redirect('admin_usuarios')
+        
+    django_user = User.objects.filter(username=usuario.correo).first()
+    
+    if django_user:
+        django_user.delete()
+    usuario.delete()
+    
+    messages.success(request, 'Usuario eliminado correctamente.')
+    return redirect('admin_usuarios')
+
 
 # APIS
 from rest_framework import viewsets

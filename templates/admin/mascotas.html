@@ -51,6 +51,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-muted" href="/admin-panel/solicitudes/">Solicitudes</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/admin-panel/usuarios/">Usuarios</a>
+                    </li>
                 </ul>
             </div>
 
@@ -95,6 +98,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
+                                    <a href="/admin-panel/mascotas/editar/{{ mascota.id_mascota }}/" class="btn btn-warning btn-sm me-1">Editar</a>
                                     <a href="/admin-panel/mascotas/eliminar/{{ mascota.id_mascota }}/" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta mascota?')">Eliminar</a>
                                 </td>
                             </tr>

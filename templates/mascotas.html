@@ -52,39 +52,39 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="filter-bar">
+            <form method="GET" action="{% url 'mascotas' %}" class="filter-bar mb-4">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
                         <label class="form-label">Especie</label>
-                        <select class="form-select">
-                            <option>Todas las especies</option>
-                            <option>Perro</option>
-                            <option>Gato</option>
-                            <option>Conejo</option>
+                        <select name="especie" class="form-select">
+                            <option value="Todas las especies" {% if filtro_especie == "Todas las especies" or not filtro_especie %}selected{% endif %}>Todas las especies</option>
+                            <option value="Perro" {% if filtro_especie == "Perro" %}selected{% endif %}>Perro</option>
+                            <option value="Gato" {% if filtro_especie == "Gato" %}selected{% endif %}>Gato</option>
+                            <option value="Conejo" {% if filtro_especie == "Conejo" %}selected{% endif %}>Conejo</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Estado</label>
-                        <select class="form-select">
-                            <option>Todos los estados</option>
-                            <option>Disponible</option>
-                            <option>En proceso</option>
+                        <select name="estado" class="form-select">
+                            <option value="Todos los estados" {% if filtro_estado == "Todos los estados" or not filtro_estado %}selected{% endif %}>Todos los estados</option>
+                            <option value="Disponible" {% if filtro_estado == "Disponible" %}selected{% endif %}>Disponible</option>
+                            <option value="En proceso" {% if filtro_estado == "En proceso" %}selected{% endif %}>En proceso</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Edad</label>
-                        <select class="form-select">
-                            <option>Todas las edades</option>
-                            <option>Joven (0-1 año)</option>
-                            <option>Adulto (1-7 años)</option>
-                            <option>Mayor (+7 años)</option>
+                        <select name="edad" class="form-select">
+                            <option value="Todas las edades" {% if filtro_edad == "Todas las edades" or not filtro_edad %}selected{% endif %}>Todas las edades</option>
+                            <option value="Joven (0-1 año)" {% if filtro_edad == "Joven (0-1 año)" %}selected{% endif %}>Joven (0-1 año)</option>
+                            <option value="Adulto (1-7 años)" {% if filtro_edad == "Adulto (1-7 años)" %}selected{% endif %}>Adulto (1-7 años)</option>
+                            <option value="Mayor (+7 años)" {% if filtro_edad == "Mayor (+7 años)" %}selected{% endif %}>Mayor (+7 años)</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn btn-primary w-100">🔍 Buscar</button>
+                        <button type="submit" class="btn btn-primary w-100">🔍 Buscar</button>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="row g-4">
                 {% for mascota in mascotas %}
